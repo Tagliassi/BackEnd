@@ -1,8 +1,8 @@
-using Br.Pucpr.AuthServer.Roles;
-using Br.Pucpr.AuthServer.Users;
+using BACK_END_PROJECT.API.roles;
+using BACK_END_PROJECT.API.users;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace BACK_END_PROJECT.API
 {
@@ -25,25 +25,34 @@ namespace BACK_END_PROJECT.API
             _log = log;
         }
 
-        public void Initialize()
+        // Método assíncrono para inicializar as roles e usuários
+        public async Task InitializeAsync()
         {
-            var adminRole = _roleRepository.FindByName("ADMIN") ??
-                            _roleRepository.Save(new Role
-                            {
-                                Name = "ADMIN",
-                                Description = "System Administrator"
-                            });
-
-            if (!_roleRepository.FindByName("USER").Any())
+            // Procurando pela role ADMIN, ou criando-a se não existir
+            var adminRole = await _roleRepository.FindByNameAsync("ADMIN");
+            if (adminRole == null)
             {
-                _roleRepository.Save(new Role
+                adminRole = await _roleRepository.SaveAsync(new Role
+                {
+                    Name = "ADMIN",
+                    Description = "System Administrator"
+                });
+            }
+
+            // Verificando se a role USER existe, caso contrário, cria-a
+            var userRole = await _roleRepository.FindByNameAsync("USER");
+            if (userRole == null)
+            {
+                await _roleRepository.SaveAsync(new Role
                 {
                     Name = "USER",
                     Description = "Premium User"
                 });
             }
 
-            if (!_userRepository.FindByRole("ADMIN").Any())
+            // Verificando se existe algum usuário com a role ADMIN, caso contrário, cria um
+            var adminUser = await _userRepository.FindByRoleAsync("ADMIN");
+            if (adminUser == null || !adminUser.Any())
             {
                 var admin = new User
                 {
@@ -53,7 +62,7 @@ namespace BACK_END_PROJECT.API
                 };
 
                 admin.Roles.Add(adminRole);
-                _userRepository.Save(admin);
+                await _userRepository.SaveAsync(admin); // Salvando o usuário ADMIN
                 _log.LogInformation("ADMIN user created!");
             }
 

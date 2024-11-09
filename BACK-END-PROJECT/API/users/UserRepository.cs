@@ -28,6 +28,15 @@ namespace BACK_END_PROJECT.API.users
                 .ToList();
         }
 
+        // Método assíncrono para encontrar usuários por role
+        public async Task<List<User>> FindByRoleAsync(string role)
+        {
+            return await _context.Set<User>()
+                .Where(u => u.Roles.Any(r => r.Name == role))
+                .OrderBy(u => u.Name)
+                .ToListAsync();
+        }
+
         // Método para buscar todos os usuários
         public List<User> FindAll()
         {
@@ -46,6 +55,21 @@ namespace BACK_END_PROJECT.API.users
                 _context.Set<User>().Update(user); // Atualizar existente
             }
             _context.SaveChanges();
+            return user;
+        }
+
+        // Método assíncrono para salvar (inserir ou atualizar) um usuário
+        public async Task<User> SaveAsync(User user)
+        {
+            if (user.Id == 0)
+            {
+                await _context.Set<User>().AddAsync(user); // Inserir novo
+            }
+            else
+            {
+                _context.Set<User>().Update(user); // Atualizar existente
+            }
+            await _context.SaveChangesAsync();
             return user;
         }
 

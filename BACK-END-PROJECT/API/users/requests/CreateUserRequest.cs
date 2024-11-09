@@ -5,7 +5,7 @@ namespace BACK_END_PROJECT.API.users.requests
     public class CreateUserRequest
     {
         [Required]
-        [NotEmpty]
+        [MinLength(1)]
         public string Name { get; set; }
 
         [Required]

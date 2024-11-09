@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using BACK_END_PROJECT.API.users.responses;
+using BACK_END_PROJECT.API.roles;
+using BACK_END_PROJECT.API.errors;
+using BACK_END_PROJECT.API.security;
+using System.Threading.Tasks;
 
 namespace BACK_END_PROJECT.API.users
 {
@@ -91,11 +96,10 @@ namespace BACK_END_PROJECT.API.users
                 return null;
 
             _log.LogInformation($"User logged in. id={user.Id} name={user.Name}");
-            return new LoginResponse
-            {
-                Token = _jwt.CreateToken(user),
-                User = new UserResponse(user)
-            };
+            
+            // Criação correta da resposta de login
+            return new LoginResponse(_jwt.CreateToken(user), new UserResponse(user));
         }
+
     }
 }

@@ -15,8 +15,8 @@ namespace BACK_END_PROJECT.API.roles
             _context = context;
         }
 
-        // Método assíncrono para inserir uma Role
-        public async Task<Role> InsertAsync(Role role)
+        // Método assíncrono para salvar uma Role
+        public async Task<Role> SaveAsync(Role role)
         {
             _context.Roles.Add(role);
             await _context.SaveChangesAsync();
@@ -29,6 +29,20 @@ namespace BACK_END_PROJECT.API.roles
             return await _context.Roles
                 .OrderBy(r => r.Name)  // Ordenando pela coluna 'Name'
                 .ToListAsync();
+        }
+
+        // Método assíncrono para buscar uma Role pelo nome
+        public async Task<Role> FindByNameAsync(string name)
+        {
+            return await _context.Roles
+                .FirstOrDefaultAsync(r => r.Name == name);
+        }
+
+        // Método não assíncrono para buscar uma Role pelo nome
+        public Role FindByName(string name)
+        {
+            return _context.Roles
+                .FirstOrDefault(r => r.Name == name);
         }
     }
 }

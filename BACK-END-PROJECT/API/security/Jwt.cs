@@ -6,6 +6,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System;
+using BACK_END_PROJECT.API.users;
+using Newtonsoft.Json;
 
 namespace BACK_END_PROJECT.API.security
 {
@@ -93,26 +96,6 @@ namespace BACK_END_PROJECT.API.security
                 // Log error
                 return null;
             }
-        }
-    }
-
-    public class UserToken
-    {
-        public long Id { get; set; }
-        public bool IsAdmin { get; set; }
-        public List<string> Roles { get; set; }
-
-        public UserToken(User user)
-        {
-            Id = user.Id;
-            IsAdmin = user.Roles.Contains("ADMIN");
-            Roles = user.Roles;
-        }
-
-        public ClaimsPrincipal ToClaimsPrincipal()
-        {
-            var claims = Roles.Select(role => new Claim(ClaimTypes.Role, $"ROLE_{role}")).ToList();
-            return new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
         }
     }
 }

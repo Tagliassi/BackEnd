@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using BACK_END_PROJECT;
+using BACK_END_PROJECT.API;
+using BACK_END_PROJECT.API.users;
+using BACK_END_PROJECT.API.security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +43,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.Configure<AdminConfig>(builder.Configuration.GetSection("security:admin"));
 
 // Registrando dependências de JWT e filtro de token
+builder.Services.AddScoped<Jwt>(); // Registrar o Jwt
 builder.Services.AddScoped<JwtTokenFilter>();
 
 // Adicionando o Bootstrapper
@@ -48,9 +51,9 @@ builder.Services.AddSingleton<Bootstrapper>();
 
 var app = builder.Build();
 
-// Inicializando o Bootstrapper
+// Inicializando o Bootstrapper assincronamente
 var bootstrapper = app.Services.GetRequiredService<Bootstrapper>();
-bootstrapper.Initialize();
+await bootstrapper.InitializeAsync(); // Esperar a inicialização assíncrona
 
 // Configuração do Swagger e outros middlewares em desenvolvimento
 if (app.Environment.IsDevelopment())

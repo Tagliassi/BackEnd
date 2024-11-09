@@ -1,8 +1,8 @@
-using Br.Pucpr.AuthServer.Errors;
-using Br.Pucpr.AuthServer.Security;
-using Br.Pucpr.AuthServer.Users;
-using Br.Pucpr.AuthServer.Users.Requests;
-using Br.Pucpr.AuthServer.Users.Responses;
+using BACK_END_PROJECT.API.errors;
+using BACK_END_PROJECT.API.security;
+using BACK_END_PROJECT.API.users;
+using BACK_END_PROJECT.API.users.requests;
+using BACK_END_PROJECT.API.users.responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace BACK_END_PROJECT.API.users
         [HttpGet]
         public IActionResult List([FromQuery] string sortDir, [FromQuery] string role)
         {
-            var sortDirection = SortDir.GetByName(sortDir) ?? throw new BadRequestException("Invalid sort dir!");
+            var sortDirection = SortDirExtensions.GetByName(sortDir) ?? throw new BadRequestException("Invalid sort dir!");
 
             var users = _service.List(sortDirection, role)
                 .Select(user => new UserResponse(user))
@@ -55,10 +55,10 @@ namespace BACK_END_PROJECT.API.users
         [Authorize(Roles = "ADMIN")]
         public IActionResult Delete(long id)
         {
-            var result = _service.Delete(id);
-            if (result) return Ok();
+            var user = _service.Delete(id);
+            if (user != null) return Ok(); // Se o usuário foi deletado, retorna OK
 
-            return NotFound();
+            return NotFound(); // Caso o usuário não exista
         }
 
         [HttpPatch("{id}")]

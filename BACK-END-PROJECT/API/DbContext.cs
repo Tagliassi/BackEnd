@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using BACK_END_PROJECT.API.users;
+using BACK_END_PROJECT.API.roles;
 
 namespace BACK_END_PROJECT.API
 {
@@ -15,7 +17,11 @@ namespace BACK_END_PROJECT.API
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configuração de relacionamento muitos-para-muitos entre User e Role
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            // Configuração do relacionamento muitos-para-muitos entre User e Role
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Roles)
                 .WithMany(r => r.Users)

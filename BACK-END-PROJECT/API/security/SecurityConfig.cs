@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,6 +11,13 @@ namespace BACK_END_PROJECT.API.security
 {
     public class SecurityConfig
     {
+        private readonly IConfiguration _configuration;
+
+        public SecurityConfig(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             // Configuração de CORS
@@ -26,6 +32,12 @@ namespace BACK_END_PROJECT.API.security
                 });
             });
 
+            // Obter a chave secreta e outras configurações do appsettings.json
+            var jwtSettings = _configuration.GetSection("Jwt");
+            var secret = jwtSettings["Secret"];
+            var issuer = jwtSettings["Issuer"];
+            var expireHours = int.Parse(jwtSettings["ExpireHours"]);
+
             // Adicionar autenticação JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -37,9 +49,10 @@ namespace BACK_END_PROJECT.API.security
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                        ValidIssuer = Jwt.SECRET,
-                        ValidAudience = Jwt.SECRET,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jwt.SECRET))
+                        ValidIssuer = issuer,
+                        ValidAudience = issuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+                        ClockSkew = TimeSpan.Zero // Remove clock skew for exact expiration time
                     };
                 });
 
@@ -70,7 +83,7 @@ namespace BACK_END_PROJECT.API.security
                 });
             });
 
-            // Adicionar filtros e políticas de segurança adicionais, como um filtro CORS
+            // Adicionar filtros e políticas de segurança adicionais
             services.AddScoped<JwtTokenFilter>();
         }
 
@@ -85,7 +98,7 @@ namespace BACK_END_PROJECT.API.security
             // Usar autorização
             app.UseAuthorization();
 
-            // Configuração de Swagger
+            // Configuração do Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -100,7 +113,11 @@ namespace BACK_END_PROJECT.API.security
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.Map("/h2-console/**").AllowAnonymous();
+                // Mapeando o caminho H2 Console corretamente
+                endpoints.Map("/h2-console/**", async context =>
+                {
+                    context.Response.Redirect("https://localhost:8082/h2-console", permanent: false); // Redireciona para o H2 Console
+                }).AllowAnonymous();
             });
         }
     }
