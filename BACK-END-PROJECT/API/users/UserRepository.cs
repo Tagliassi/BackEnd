@@ -6,9 +6,9 @@ namespace BACK_END_PROJECT.API.users
 {
     public class UserRepository
     {
-        private readonly DbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UserRepository(DbContext context)
+        public UserRepository(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using BACK_END_PROJECT.API;
 using BACK_END_PROJECT.API.users;
+using BACK_END_PROJECT.API.roles;
 using BACK_END_PROJECT.API.security;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,14 +47,20 @@ builder.Services.Configure<AdminConfig>(builder.Configuration.GetSection("securi
 builder.Services.AddScoped<Jwt>(); // Registrar o Jwt
 builder.Services.AddScoped<JwtTokenFilter>();
 
+builder.Services.AddScoped<RoleRepository>();
+builder.Services.AddScoped<UserRepository>(); 
+
 // Adicionando o Bootstrapper
-builder.Services.AddSingleton<Bootstrapper>();
+builder.Services.AddScoped<Bootstrapper>();
 
 var app = builder.Build();
 
-// Inicializando o Bootstrapper assincronamente
-var bootstrapper = app.Services.GetRequiredService<Bootstrapper>();
-await bootstrapper.InitializeAsync(); // Esperar a inicialização assíncrona
+// Criando um escopo manual para inicializar o Bootstrapper
+using (var scope = app.Services.CreateScope())
+{
+    var bootstrapper = scope.ServiceProvider.GetRequiredService<Bootstrapper>();
+    await bootstrapper.InitializeAsync(); // Esperar a inicialização assíncrona
+}
 
 // Configuração do Swagger e outros middlewares em desenvolvimento
 if (app.Environment.IsDevelopment())
