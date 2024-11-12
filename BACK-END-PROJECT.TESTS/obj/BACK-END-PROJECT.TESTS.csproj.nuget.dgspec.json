@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT.TESTS\\BACK-END-PROJECT.TESTS.csproj": {}
+    "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT.TESTS/BACK-END-PROJECT.TESTS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT.TESTS\\BACK-END-PROJECT.TESTS.csproj": {
+    "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT.TESTS/BACK-END-PROJECT.TESTS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT.TESTS\\BACK-END-PROJECT.TESTS.csproj",
+        "projectUniqueName": "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT.TESTS/BACK-END-PROJECT.TESTS.csproj",
         "projectName": "BACK-END-PROJECT.TESTS",
-        "projectPath": "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT.TESTS\\BACK-END-PROJECT.TESTS.csproj",
-        "packagesPath": "C:\\Users\\rafae\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT.TESTS\\obj\\",
+        "projectPath": "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT.TESTS/BACK-END-PROJECT.TESTS.csproj",
+        "packagesPath": "/Users/vinicosper/.nuget/packages/",
+        "outputPath": "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT.TESTS/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\rafae\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/vinicosper/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT\\BACK-END-PROJECT.csproj": {
-                "projectPath": "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT\\BACK-END-PROJECT.csproj"
+              "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT/BACK-END-PROJECT.csproj": {
+                "projectPath": "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT/BACK-END-PROJECT.csproj"
               }
             }
           }
@@ -47,6 +47,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[17.8.0, )"
@@ -57,7 +61,7 @@
             },
             "xunit": {
               "target": "Package",
-              "version": "[2.5.3, )"
+              "version": "[2.9.2, )"
             },
             "xunit.runner.visualstudio": {
               "target": "Package",
@@ -80,21 +84,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT\\BACK-END-PROJECT.csproj": {
+    "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT/BACK-END-PROJECT.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT\\BACK-END-PROJECT.csproj",
+        "projectUniqueName": "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT/BACK-END-PROJECT.csproj",
         "projectName": "BACK-END-PROJECT",
-        "projectPath": "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT\\BACK-END-PROJECT.csproj",
-        "packagesPath": "C:\\Users\\rafae\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rafae\\OneDrive - Grupo Marista\\BackEnd\\BACK-END-PROJECT\\obj\\",
+        "projectPath": "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT/BACK-END-PROJECT.csproj",
+        "packagesPath": "/Users/vinicosper/.nuget/packages/",
+        "outputPath": "/Users/vinicosper/Downloads/BackEnd-1/BACK-END-PROJECT/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\rafae\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/vinicosper/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -123,37 +127,37 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "AutoMapper": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[12.0.1, )"
-            },
-            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
-              "target": "Package",
-              "version": "[12.0.1, )"
+              "version": "[8.0.10, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.10, )"
             },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[8.0.2, )"
             },
             "Microsoft.EntityFrameworkCore.Relational": {
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[8.0.2, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[8.0.2, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[8.0.2, )"
             },
             "Microsoft.EntityFrameworkCore.Tools.DotNet": {
               "target": "Package",
@@ -161,11 +165,19 @@
             },
             "Microsoft.Extensions.Hosting": {
               "target": "Package",
-              "version": "[8.0.1, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.Extensions.Logging.Console": {
               "target": "Package",
-              "version": "[8.0.1, )"
+              "version": "[9.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             },
             "Serilog": {
               "target": "Package",
@@ -177,7 +189,15 @@
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.9.0, )"
+              "version": "[7.0.0, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[2.4.3, )"
             }
           },
           "imports": [
@@ -199,7 +219,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
