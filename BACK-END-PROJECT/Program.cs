@@ -5,6 +5,7 @@ using BACK_END_PROJECT.API;
 using BACK_END_PROJECT.API.users;
 using BACK_END_PROJECT.API.roles;
 using BACK_END_PROJECT.API.security;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,8 +38,14 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Configuração do DbContext
+// builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException("builder.Configuration.GetConnectionString(\"DefaultConnection\")");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 4, 2)));
+});
 
 // Configuração de bind da seção "security.admin" no appsettings.json para AdminConfig
 builder.Services.Configure<AdminConfig>(builder.Configuration.GetSection("security:admin"));
@@ -49,6 +56,9 @@ builder.Services.AddScoped<JwtTokenFilter>();
 
 builder.Services.AddScoped<RoleRepository>();
 builder.Services.AddScoped<UserRepository>(); 
+
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();
 
 // Adicionando o Bootstrapper
 builder.Services.AddScoped<Bootstrapper>();
@@ -77,7 +87,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Registrando o filtro de JWT
-app.UseMiddleware<JwtTokenFilter>();
+// app.UseMiddleware<JwtTokenFilter>();
 
 // Mapeamento de controladores (endpoints API)
 app.MapControllers();
