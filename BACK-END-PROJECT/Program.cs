@@ -6,6 +6,8 @@ using BACK_END_PROJECT.API.users;
 using BACK_END_PROJECT.API.roles;
 using BACK_END_PROJECT.API.security;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +20,8 @@ builder.Services.AddSwaggerGen(options =>
         In = ParameterLocation.Header,
         Description = "Please enter your Bearer token",
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -37,11 +40,9 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Configuração do DbContext
-// builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException("builder.Configuration.GetConnectionString(\"DefaultConnection\")");
+// Configuração do DbContext para MySQL
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? throw new ArgumentNullException("builder.Configuration.GetConnectionString(\"DefaultConnection\")");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 4, 2)));
@@ -50,13 +51,34 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Configuração de bind da seção "security.admin" no appsettings.json para AdminConfig
 builder.Services.Configure<AdminConfig>(builder.Configuration.GetSection("security:admin"));
 
+
+
 // Registrando dependências de JWT e filtro de token
 builder.Services.AddScoped<Jwt>(); // Registrar o Jwt
-builder.Services.AddScoped<JwtTokenFilter>();
+builder.Services.AddScoped<JwtTokenFilter>(); // Registrar o filtro de JWT
 
+// Registrando repositórios e serviços
 builder.Services.AddScoped<RoleRepository>();
-builder.Services.AddScoped<UserRepository>(); 
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<RoleService>();
 
+// Configuração de autenticação JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "PUCPR AuthServer", // Atualize conforme necessário
+            ValidAudience = "PUCPR AuthServer", // Atualize conforme necessário
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("0e5582adfb7fa6bb770815f3c6b3534d311bd5fe")) // Substitua pela sua chave secreta real
+        };
+    });
+// Adicionando serviços para autorização e controladores
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
@@ -85,9 +107,6 @@ app.UseHttpsRedirection();
 // Registrando os middlewares de autenticação e autorização
 app.UseAuthentication();
 app.UseAuthorization();
-
-// Registrando o filtro de JWT
-// app.UseMiddleware<JwtTokenFilter>();
 
 // Mapeamento de controladores (endpoints API)
 app.MapControllers();

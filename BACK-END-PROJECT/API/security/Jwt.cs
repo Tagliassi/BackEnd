@@ -30,7 +30,7 @@ namespace BACK_END_PROJECT.API.security
         public string CreateToken(User user)
         {
             var userToken = new UserToken(user);
-
+            
             var expiration = DateTime.UtcNow.AddHours(
                 userToken.IsAdmin ? _adminExpireHours : _expireHours);
 

@@ -27,8 +27,6 @@ namespace BACK_END_PROJECT.API.users
 
         public User Insert(User user)
         {
-            if (user.Id != null)
-                throw new ArgumentException("Usuário já inserido!");
 
             if (_repository.FindByEmail(user.Email) != null)
                 throw new BadRequestException($"Usuário com email {user.Email} já existe!");
@@ -40,7 +38,9 @@ namespace BACK_END_PROJECT.API.users
         {
             if (!string.IsNullOrEmpty(role))
             {
-                return _repository.FindByRole(role).ToList();
+                
+                return sortDir == SortDir.ASC
+                    ? _repository.FindByRole(role).ToList() : _repository.FindByRole(role).OrderByDescending(u => u.Id).ToList();
             }
             else
             {
